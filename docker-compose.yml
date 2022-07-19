@@ -1,0 +1,15 @@
+version: "3"
+services:
+  vcs-filip:
+    build: .
+    network: host
+  grafana:
+    image: grafana:latest
+    volumes:
+      - ./volumes/grafana/storage:/var/lib/grafana
+    network: host
+  influxdb:
+    image: influxdb:latest
+    volumes:
+      - ./volumes/influxdb2/storage:/var/lib/influxdb2
+    network: host
