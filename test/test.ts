@@ -25,7 +25,7 @@ describe('Volatility calculation', () => {
       const start = process.hrtime();
 
       _.each(l2Updates, upd => {
-        const vol = update(upd as unknown as Level2Update);
+        update(upd as unknown as Level2Update);
       });
 
       const [secondsDiff, nanosecondsDiff] = process.hrtime(start);

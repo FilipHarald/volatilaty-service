@@ -35,7 +35,8 @@ const updateBooks = (l2Update: Level2Update) => {
 };
 
 const calculate = (orders: number[][]) => {
-  return orders.slice(0, orders.length-1).reduce((acc, currOrder, index) => {
+  const allButLastOrder = orders.slice(0, orders.length-1);
+  return _.reduce(allButLastOrder, (acc, currOrder, index) => {
     return acc + (
       Math.abs(currOrder[MIDPRICE_INDEX] - orders[index + 1][MIDPRICE_INDEX])
       / currOrder[MIDPRICE_INDEX]
