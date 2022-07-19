@@ -3,9 +3,11 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "target": "es6",
-    "moduleResolution": "node",
-    "sourceMap": true,
     "outDir": "dist"
   },
-  "lib": ["es2015"]
+  "include": [
+    "src/**/*",
+    "test/**/*"
+  ],
+  "exclude": ["node_modules"]
 }
