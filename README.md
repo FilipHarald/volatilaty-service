@@ -1,1 +1,1 @@
-# volatilaty-service
+# volatility-service
