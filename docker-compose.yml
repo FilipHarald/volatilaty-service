@@ -1,15 +1,23 @@
 version: "3"
 services:
   vcs-filip:
-    build: .
-    network: host
+    build: ./volatility-calculator-service
   grafana:
-    image: grafana:latest
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000
     volumes:
-      - ./volumes/grafana/storage:/var/lib/grafana
-    network: host
+      - ./volumes/grafana/storage:/var/lib/grafana:rw
   influxdb:
     image: influxdb:latest
+    ports:
+      - 8086:8086
     volumes:
       - ./volumes/influxdb2/storage:/var/lib/influxdb2
-    network: host
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=my-user
+      - DOCKER_INFLUXDB_INIT_PASSWORD=my-password
+      - DOCKER_INFLUXDB_INIT_ORG=my-org
+      - DOCKER_INFLUXDB_INIT_BUCKET=my-bucket
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-token

@@ -1,3 +1,4 @@
 node_modules
 dist
-volumes
+volumes/*
+!volumes/grafana/storage/grafana.db
