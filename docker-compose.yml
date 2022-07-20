@@ -7,7 +7,7 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./volumes/grafana/storage:/var/lib/grafana:rw
+      - ./volumes/grafana/storage/grafana.db:/var/lib/grafana/grafana.db:rw
   influxdb:
     image: influxdb:latest
     ports:

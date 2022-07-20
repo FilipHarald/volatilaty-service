@@ -1,4 +1,3 @@
 node_modules
 dist
-volumes/*
-!volumes/grafana/storage/grafana.db
+volumes/influxdb2
