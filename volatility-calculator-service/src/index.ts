@@ -13,13 +13,16 @@ const client = new Client();
 client.on("l2update", l2update => {
 
   const start = process.hrtime();
-  const volatility = calculator.update(l2update);
+  const { version, volatility } = calculator.update(l2update);
   const [,nanosecondsDiff] = process.hrtime(start);
-//  console.log(`
-//timestamp:      ${Date.now()}
-//volatility:     ${volatility}
-//execution time: ${(nanosecondsDiff) / 1_000_000}`);
-  db.writeVolatilityMetric(200, 1, volatility);
+  console.log(`
+timestamp:      ${Date.now()}
+volatility:     ${volatility}
+execution time: ${(nanosecondsDiff) / 1_000_000}`);
+  const tags = [
+    ['version', version]
+  ];
+  db.writeVolatilityMetric(volatility, tags);
 });
 
 const start = async () => {

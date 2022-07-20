@@ -47,7 +47,10 @@ const calculate = (orders: number[][]) => {
 
 const update = (l2Update: Level2Update) => {
   updateBooks(l2Update);
-  return calculate(prevBooks) || 0;
+  return {
+    version: '1',
+    volatility: calculate(prevBooks) || 0
+  }
 };
 
 export {

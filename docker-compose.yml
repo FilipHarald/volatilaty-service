@@ -2,6 +2,8 @@ version: "3"
 services:
   vcs-filip:
     build: ./volatility-calculator-service
+    environment:
+      - INFLUX_URL=http://influxdb:8086
   grafana:
     image: grafana/grafana:latest
     ports:
