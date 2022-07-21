@@ -13,7 +13,7 @@ const init = async () => {
 };
 
 const write = (name: string, value: number, tags: any[][]) => {
-  if (writeApi && value) {
+  if (writeApi && value && value !== Infinity) {
     const point1 = new Point(name)
       .floatField('value', value)
     _.forEach(tags, (t) => {

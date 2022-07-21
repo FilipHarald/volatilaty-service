@@ -20,6 +20,9 @@
     "url": "https://github.com/FilipHarald/volatility-service/issues"
   },
   "homepage": "https://github.com/FilipHarald/volatility-service#readme",
+  "workspaces": [
+    "packages/*"
+  ],
   "dependencies": {
     "@influxdata/influxdb-client": "^1.27.0",
     "ccxws": "^0.47.0",
