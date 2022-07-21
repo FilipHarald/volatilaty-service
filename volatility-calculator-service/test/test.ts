@@ -2,7 +2,7 @@ import _ from "lodash";
 import { expect } from 'chai';
 import { Level2Update } from "ccxws";
 
-import { v1, v2 } from '../src/volatility-calculator';
+import { v1, v2, v3 } from '../src/volatility-calculator';
 
 import { l2Updates } from './assets';
 
@@ -59,6 +59,39 @@ describe('Volatility calculation', () => {
         expect(
           v2.update(l2Updates[5] as unknown as Level2Update).volatility
         ).equal(0.05542931450061898);
+      });
+    });
+    describe('v3', () => {
+      it('test for memory', () => {
+        expect(v3.test(1)).equal(0);
+        expect(v3.test(1)).equal(1);
+      });
+      it('test for ibjs', () => {
+        v3.update(l2Updates[0] as unknown as Level2Update)
+        v3.update(l2Updates[0] as unknown as Level2Update)
+        v3.update(l2Updates[0] as unknown as Level2Update)
+        v3.update(l2Updates[0] as unknown as Level2Update)
+        expect(v3.update(l2Updates[0] as unknown as Level2Update)).equal(0);
+      });
+      it('should calculate correctly', () => {
+        expect(v3.calculate(books)).equal(0.36147860256782666);
+      });
+      it('should return correct version', () => {
+        expect(
+          v3.update(l2Updates[0] as unknown as Level2Update).version
+        ).equal('1');
+      });
+      it('should return correct volatility with rolling window', () => {
+        // TODO: make tests stateless (this should not depend on above test)
+        v3.update(l2Updates[1] as unknown as Level2Update).volatility;
+        v3.update(l2Updates[2] as unknown as Level2Update).volatility;
+        v3.update(l2Updates[3] as unknown as Level2Update).volatility;
+        expect(
+          v3.update(l2Updates[4] as unknown as Level2Update).volatility
+        ).equal(0.17699841196990795);
+        expect(
+          v3.update(l2Updates[5] as unknown as Level2Update).volatility
+        ).equal(0.16003151392510687);
       });
     });
   });
