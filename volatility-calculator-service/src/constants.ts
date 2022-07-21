@@ -1,0 +1,7 @@
+const TIMESTAMP_INDEX = 0;
+const MIDPRICE_INDEX = 3;
+
+export {
+  TIMESTAMP_INDEX,
+  MIDPRICE_INDEX
+};

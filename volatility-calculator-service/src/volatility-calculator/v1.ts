@@ -1,8 +1,6 @@
 import _ from "lodash";
 import { Level2Update } from "ccxws";
-
-const TIMESTAMP_INDEX = 0;
-const MIDPRICE_INDEX = 3;
+import {MIDPRICE_INDEX, TIMESTAMP_INDEX} from "../constants";
 
 let prevBooks = [];
 
@@ -25,12 +23,11 @@ const updateBooks = (l2Update: Level2Update) => {
   ];
 
   const outdatedThreshold = l2Update.timestampMs - 200;
-
-  const firstIndexWithinWindow = _.findLastIndex(prevBooks, prevBook => prevBook[0] > outdatedThreshold);
+  const lastIndexWithinWindow = _.findLastIndex(prevBooks, prevBook => prevBook[TIMESTAMP_INDEX] > outdatedThreshold);
 
   prevBooks = [
     book,
-    ...prevBooks.slice(firstIndexWithinWindow),
+    ...prevBooks.slice(0, lastIndexWithinWindow + 1),
   ];
 };
 
@@ -57,4 +54,4 @@ export {
   updateBooks,
   calculate,
   update,
-}
+};

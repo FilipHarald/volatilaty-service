@@ -1,11 +1,11 @@
 import _ from "lodash";
 import { Level2Update } from "ccxws";
+import {MIDPRICE_INDEX, TIMESTAMP_INDEX} from "../constants";
 
-const TIMESTAMP_INDEX = 0;
-const MIDPRICE_INDEX = 3;
+// NOTE: this version was made to avoid fluctuations in the initial calculations. The fluctuation turned out to be a bug in how the rolling window was handled. Therefore, the only difference from v1 is that it is delayed 200 ms.
 
 let prevBooks = [];
-let firstBookTimestamp;
+let firstBookTimestamp: number;
 
 const updateBooks = (l2Update: Level2Update) => {
   const bestBid = Number(
@@ -27,15 +27,12 @@ const updateBooks = (l2Update: Level2Update) => {
 
   const outdatedThreshold = l2Update.timestampMs - 200;
 
-  const firstIndexWithinWindow = _.findLastIndex(prevBooks, prevBook => prevBook[0] > outdatedThreshold);
+  const lastIndexWithinWindow = _.findLastIndex(prevBooks, prevBook => prevBook[TIMESTAMP_INDEX] > outdatedThreshold);
 
-  firstBookTimestamp = firstBookTimestamp || l2Update.timestampMs;
-  if (firstBookTimestamp + 200 < l2Update.timestampMs) {
-    prevBooks = [
-      book,
-      ...prevBooks.slice(firstIndexWithinWindow),
-    ];
-  }
+  prevBooks = [
+    book,
+  ...prevBooks.slice(0, lastIndexWithinWindow + 1),
+  ];
 };
 
 const calculate = (orders: number[][]) => {
@@ -51,9 +48,16 @@ const calculate = (orders: number[][]) => {
 
 const update = (l2Update: Level2Update) => {
   updateBooks(l2Update);
+  firstBookTimestamp = firstBookTimestamp || l2Update.timestampMs;
+  if (firstBookTimestamp + 200 < l2Update.timestampMs) { // to avoid fluctuation in first calculations
+    return {
+      version: '2',
+      volatility: calculate(prevBooks) || 0
+    }
+  }
   return {
     version: '2',
-    volatility: calculate(prevBooks) || 0
+    volatility: null
   }
 };
 

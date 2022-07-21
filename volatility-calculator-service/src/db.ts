@@ -13,7 +13,7 @@ const init = async () => {
 };
 
 const writeVolatilityMetric = (value: Number, tags: string[][]) => {
-  if (writeApi) {
+  if (writeApi && value) {
     const point1 = new Point(`volatility-metric`)
       .floatField('value', value)
     _.forEach(tags, (t) => {
