@@ -1,6 +1,7 @@
 import { BinanceFuturesUsdtmClient as Client } from "ccxws";
 import * as calculator from "./volatility-calculator";
 import * as db from "./db";
+import {METRIC_EXECUTION_TIME, METRIC_VOLATILITY} from "./constants";
 
 const market = {
   id: "BTCUSDT",
@@ -15,14 +16,16 @@ const onL2Update = (l2update, calculator) => {
   const { version, volatility } = calculator.update(l2update);
   if (!!version) {
     const [,nanosecondsDiff] = process.hrtime(start);
+    const executionTime = nanosecondsDiff / 1_000_000;
     console.log(`
   timestamp:      ${Date.now()}
   volatility:     ${volatility}
-  execution time: ${(nanosecondsDiff) / 1_000_000}`);
+  execution time: ${executionTime}`);
     const tags = [
       ['version', version]
     ];
-    db.writeVolatilityMetric(volatility, tags);
+    db.write(METRIC_VOLATILITY, volatility, tags);
+    db.write(METRIC_EXECUTION_TIME, executionTime, tags);
   }
 };
 

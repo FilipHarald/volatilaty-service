@@ -12,9 +12,9 @@ const init = async () => {
   writeApi = new InfluxDB({url, token}).getWriteApi(org, bucket, 'ns')
 };
 
-const writeVolatilityMetric = (value: Number, tags: string[][]) => {
+const write = (name: string, value: number, tags: any[][]) => {
   if (writeApi && value) {
-    const point1 = new Point(`volatility-metric`)
+    const point1 = new Point(name)
       .floatField('value', value)
     _.forEach(tags, (t) => {
       point1.tag(t[0], t[1])
@@ -25,7 +25,7 @@ const writeVolatilityMetric = (value: Number, tags: string[][]) => {
 
 export {
   init,
-  writeVolatilityMetric
+  write
 };
 
 
