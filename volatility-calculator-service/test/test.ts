@@ -2,7 +2,7 @@ import _ from "lodash";
 import { expect } from 'chai';
 import { Level2Update } from "ccxws";
 
-import { calculate, update } from '../src/volatility-calculator';
+import { v1, v2 } from '../src/volatility-calculator';
 
 import { l2Updates } from './assets';
 
@@ -15,8 +15,39 @@ describe('Volatility calculation', () => {
       [66, 20050, 20060, 20055],
       [1, 20000, 20010, 20005],
     ];
-    it('should calculate correctly', () => {
-      expect(calculate(books)).equal(0.36147860256782666);
+    describe('v1', () => {
+      it('should calculate correctly', () => {
+        expect(v1.calculate(books)).equal(0.36147860256782666);
+      });
+      it('should return correct version', () => {
+        expect(
+          v1.update(l2Updates[0] as unknown as Level2Update).version
+        ).equal('1');
+      });
+    });
+    describe('v2', () => {
+      it('should calculate correctly', () => {
+        expect(v2.calculate(books)).equal(0.36147860256782666);
+      });
+      it('should return correct version', () => {
+        expect(
+          v2.update(l2Updates[0] as unknown as Level2Update).version
+        ).equal('2');
+      });
+      it('should return 0 if 200ms has not passed since first book', () => {
+        expect(
+          v2.update(l2Updates[0] as unknown as Level2Update).volatility
+        ).equal(0);
+        expect(
+          v2.update(l2Updates[4] as unknown as Level2Update).volatility
+        ).equal(0);
+      });
+      it('should return volatility if 200ms has passed since first book', () => {
+        v2.update(l2Updates[0] as unknown as Level2Update).volatility;
+        expect(
+          v2.update(l2Updates[5] as unknown as Level2Update).volatility
+        ).above(0);
+      });
     });
   });
 
@@ -25,7 +56,18 @@ describe('Volatility calculation', () => {
       const start = process.hrtime();
 
       _.each(l2Updates, upd => {
-        update(upd as unknown as Level2Update);
+        v1.update(upd as unknown as Level2Update);
+      });
+
+      const [secondsDiff, nanosecondsDiff] = process.hrtime(start);
+      expect(secondsDiff).equal(0);
+      expect(nanosecondsDiff / l2Updates.length).below(1_000_000);
+    });
+    it('should be blazingly fast', () => {
+      const start = process.hrtime();
+
+      _.each(l2Updates, upd => {
+        v1.update(upd as unknown as Level2Update);
       });
 
       const [secondsDiff, nanosecondsDiff] = process.hrtime(start);
