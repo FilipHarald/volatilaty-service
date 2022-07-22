@@ -62,17 +62,6 @@ describe('Volatility calculation', () => {
       });
     });
     describe('v3', () => {
-      it('test for memory', () => {
-        expect(v3.test(1)).equal(0);
-        expect(v3.test(1)).equal(1);
-      });
-      it('test for ibjs', () => {
-        v3.update(l2Updates[0] as unknown as Level2Update)
-        v3.update(l2Updates[0] as unknown as Level2Update)
-        v3.update(l2Updates[0] as unknown as Level2Update)
-        v3.update(l2Updates[0] as unknown as Level2Update)
-        expect(v3.update(l2Updates[0] as unknown as Level2Update)).equal(0);
-      });
       it('should calculate correctly', () => {
         expect(v3.calculate(books)).equal(0.36147860256782666);
       });
