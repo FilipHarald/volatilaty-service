@@ -1,4 +1,5 @@
 # volatility-service
+*should have named it volatility-calculator-service from the start :)*
 
 ## running...
 
@@ -17,7 +18,7 @@ Look in the logs or go to http://localhost:3000 and log in with `admin`/`passwor
 ### ...tests
 Requires `node` and `rust`.
 ```
-cd volatility-calculator-service
+cd service
 npm install
 npm run test
 ```
