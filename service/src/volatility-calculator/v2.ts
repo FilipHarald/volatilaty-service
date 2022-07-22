@@ -46,12 +46,13 @@ const calculate = (orders: number[][]) => {
   }, 0) / (orders.length - 1) * 10_000;
 };
 
-const update = async (l2Update: Level2Update) => {
+const update = (l2Update: Level2Update) => {
   updateBooks(l2Update);
   firstBookTimestamp = firstBookTimestamp || l2Update.timestampMs;
   if (firstBookTimestamp + 200 < l2Update.timestampMs) { // to avoid fluctuation in first calculations
     return {
       version: '2',
+      prevBooksSize: prevBooks.length,
       volatility: calculate(prevBooks) || 0
     }
   }

@@ -3,10 +3,12 @@ const MIDPRICE_INDEX = 3;
 
 const METRIC_EXECUTION_TIME = 'execution-time';
 const METRIC_VOLATILITY = 'volatility';
+const METRIC_BOOKS_SIZE = 'books-size';
 
 export {
   TIMESTAMP_INDEX,
   MIDPRICE_INDEX,
   METRIC_EXECUTION_TIME,
   METRIC_VOLATILITY,
+  METRIC_BOOKS_SIZE,
 };

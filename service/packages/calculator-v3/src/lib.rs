@@ -78,10 +78,12 @@ fn update(mut cx: FunctionContext) -> JsResult<JsObject> {
     // --------------- BUILDING RETURN OBJ
     let obj = cx.empty_object();
     let vol = cx.number(volatility);
+    let prev_book_size = cx.number((second_last_index + 1) as f64);
 
     let version = cx.string(VERSION);
     obj.set(&mut cx, "version", version);
     obj.set(&mut cx, "volatility", vol);
+    obj.set(&mut cx, "prevBooksSize", prev_book_size);
     Ok(obj)
 }
 
