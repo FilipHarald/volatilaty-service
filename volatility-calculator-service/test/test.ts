@@ -87,7 +87,7 @@ describe('Volatility calculation', () => {
   });
 
   describe('speed', () => {
-    it('v1', () => {
+    describe('v1', () => {
       it('should be reasonably fast', () => {
         const start = process.hrtime();
 
@@ -111,7 +111,7 @@ describe('Volatility calculation', () => {
         expect(nanosecondsDiff).below(1_000_000);
       });
     });
-    it('v2', () => {
+    describe('v2', () => {
       it('should be reasonably fast', () => {
         const start = process.hrtime();
 
@@ -128,6 +128,30 @@ describe('Volatility calculation', () => {
 
         _.each(l2Updates, upd => {
           v2.update(upd as unknown as Level2Update);
+        });
+
+        const [secondsDiff, nanosecondsDiff] = process.hrtime(start);
+        expect(secondsDiff).equal(0);
+        expect(nanosecondsDiff).below(1_000_000);
+      });
+    });
+    describe('v3', () => {
+      it('should be reasonably fast', () => {
+        const start = process.hrtime();
+
+        _.each(l2Updates, upd => {
+          v3.update(upd as unknown as Level2Update);
+        });
+
+        const [secondsDiff, nanosecondsDiff] = process.hrtime(start);
+        expect(secondsDiff).equal(0);
+        expect(nanosecondsDiff / l2Updates.length).below(1_000_000);
+      });
+      it('should be blazingly fast', () => {
+        const start = process.hrtime();
+
+        _.each(l2Updates, upd => {
+          v3.update(upd as unknown as Level2Update);
         });
 
         const [secondsDiff, nanosecondsDiff] = process.hrtime(start);
