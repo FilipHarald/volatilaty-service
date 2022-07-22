@@ -22,6 +22,3 @@ cd service
 npm install
 npm run test
 ```
-
-## TODO
-multiple markets
