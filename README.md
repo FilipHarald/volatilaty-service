@@ -1,8 +1,8 @@
 # volatility-service
 
-## running
+## running...
 
-### in Docker with vizualsation in Grafana
+### ...in Docker with vizualsation in Grafana
 Requires `docker-compose`.
 
 step 1:
@@ -14,7 +14,7 @@ step 2:
 
 Look in the logs or go to http://localhost:3000 and log in with `admin`/`password`.
 
-### tests
+### ...tests
 Requires `node` and `rust`.
 ```
 cd volatility-calculator-service
