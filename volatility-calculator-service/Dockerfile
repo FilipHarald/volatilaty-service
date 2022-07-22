@@ -6,6 +6,7 @@ RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable && \
   PATH="/root/.cargo/bin:$PATH" rustup install stable
 ENV PATH $PATH:/root/.cargo/bin
 
+# Build app
 COPY package.json .
 COPY package-lock.json .
 COPY packages ./packages
