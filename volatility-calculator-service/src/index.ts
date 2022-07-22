@@ -11,9 +11,9 @@ const market = {
 
 const client = new Client();
 
-const onL2Update = (l2update, calculator) => {
+const onL2Update = async (l2update, calculator) => {
   const start = process.hrtime();
-  const { version, volatility } = calculator.update(l2update);
+  const { version, volatility } = await calculator.update(l2update);
   if (!!version) {
     const [,nanosecondsDiff] = process.hrtime(start);
     const executionTime = nanosecondsDiff / 1_000_000;

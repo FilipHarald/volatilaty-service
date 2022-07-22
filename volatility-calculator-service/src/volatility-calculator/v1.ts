@@ -42,7 +42,7 @@ const calculate = (orders: number[][]) => {
   }, 0) / (orders.length - 1) * 10_000;
 };
 
-const update = (l2Update: Level2Update) => {
+const update = async (l2Update: Level2Update) => {
   updateBooks(l2Update);
   return {
     version: '1',
