@@ -1,6 +1,6 @@
 import _ from "lodash";
-import { expect } from 'chai';
 import { Level2Update } from "ccxws";
+import { expect } from 'chai';
 
 import { v1, v2, v3 } from '../src/volatility-calculator';
 
@@ -19,21 +19,21 @@ describe('Volatility calculation', () => {
       it('should calculate correctly', () => {
         expect(v1.calculate(books)).equal(0.36147860256782666);
       });
-      it('should return correct version', () => {
+      it('should return correct version', async () => {
         expect(
-          v1.update(l2Updates[0] as unknown as Level2Update).version
+          (await v1.update(l2Updates[0] as unknown as Level2Update)).version
         ).equal('1');
       });
-      it('should return correct volatility with rolling window', () => {
+      it('should return correct volatility with rolling window', async () => {
         // TODO: make tests stateless (this should not depend on above test)
-        v1.update(l2Updates[1] as unknown as Level2Update).volatility;
-        v1.update(l2Updates[2] as unknown as Level2Update).volatility;
-        v1.update(l2Updates[3] as unknown as Level2Update).volatility;
+        (await v1.update(l2Updates[1] as unknown as Level2Update)).volatility;
+        (await v1.update(l2Updates[2] as unknown as Level2Update)).volatility;
+        (await v1.update(l2Updates[3] as unknown as Level2Update)).volatility;
         expect(
-          v1.update(l2Updates[4] as unknown as Level2Update).volatility
+          (await v1.update(l2Updates[4] as unknown as Level2Update)).volatility
         ).equal(0.17699841196990795);
         expect(
-          v1.update(l2Updates[5] as unknown as Level2Update).volatility
+          (await v1.update(l2Updates[5] as unknown as Level2Update)).volatility
         ).equal(0.16003151392510687);
       });
     });
@@ -41,23 +41,23 @@ describe('Volatility calculation', () => {
       it('should calculate correctly', () => {
         expect(v2.calculate(books)).equal(0.36147860256782666);
       });
-      it('should return correct version', () => {
+      it('should return correct version', async () => {
         expect(
-          v2.update(l2Updates[0] as unknown as Level2Update).version
+          (await v2.update(l2Updates[0] as unknown as Level2Update)).version
         ).equal('2');
       });
-      it('should return null if 200ms has not passed since first book', () => {
+      it('should return null if 200ms has not passed since first book', async () => {
         expect(
-          v2.update(l2Updates[0] as unknown as Level2Update).volatility
+          (await v2.update(l2Updates[0] as unknown as Level2Update)).volatility
         ).to.be.null;
         expect(
-          v2.update(l2Updates[3] as unknown as Level2Update).volatility
+          (await v2.update(l2Updates[3] as unknown as Level2Update)).volatility
         ).to.be.null;
       });
-      it('should return volatility if 200ms has passed since first book', () => {
+      it('should return volatility if 200ms has passed since first book', async () => {
         // TODO: make tests stateless (this should not depend on above test)
         expect(
-          v2.update(l2Updates[5] as unknown as Level2Update).volatility
+          (await v2.update(l2Updates[5] as unknown as Level2Update)).volatility
         ).equal(0.05542931450061898);
       });
     });
@@ -66,21 +66,21 @@ describe('Volatility calculation', () => {
       // it('should calculate correctly', () => {
       //   expect(v3.calculate(books)).equal(0.36147860256782666);
       // });
-      it('should return correct version', () => {
+      it('should return correct version', async () => {
         expect(
-          v3.update(l2Updates[0] as unknown as Level2Update).version
+          (await v3.update(l2Updates[0] as unknown as Level2Update)).version
         ).equal('3');
       });
-      it('should return correct volatility with rolling window', () => {
+      it('should return correct volatility with rolling window', async () => {
         // TODO: make tests stateless (this should not depend on above test)
-        v3.update(l2Updates[1] as unknown as Level2Update).volatility;
-        v3.update(l2Updates[2] as unknown as Level2Update).volatility;
-        v3.update(l2Updates[3] as unknown as Level2Update).volatility;
+        (await v3.update(l2Updates[1] as unknown as Level2Update)).volatility;
+        (await v3.update(l2Updates[2] as unknown as Level2Update)).volatility;
+        (await v3.update(l2Updates[3] as unknown as Level2Update)).volatility;
         expect(
-          v3.update(l2Updates[4] as unknown as Level2Update).volatility
+          (await v3.update(l2Updates[4] as unknown as Level2Update)).volatility
         ).equal(0.17699841196990795);
         expect(
-          v3.update(l2Updates[5] as unknown as Level2Update).volatility
+          (await v3.update(l2Updates[5] as unknown as Level2Update)).volatility
         ).equal(0.16003151392510687);
       });
     });
