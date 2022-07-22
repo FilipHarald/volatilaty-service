@@ -1,5 +1,4 @@
 # volatility-service
-*should have named it volatility-calculator-service from the start :)*
 
 ## running...
 
