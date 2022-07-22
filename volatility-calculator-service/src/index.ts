@@ -18,7 +18,7 @@ const onL2Update = (l2update, calculator) => {
     const [,nanosecondsDiff] = process.hrtime(start);
     const executionTime = nanosecondsDiff / 1_000_000;
     console.log(`
-  timestamp:      ${Date.now()}
+  version:        ${version}
   volatility:     ${volatility}
   execution time: ${executionTime}`);
     const tags = [
@@ -30,8 +30,10 @@ const onL2Update = (l2update, calculator) => {
 };
 
 client.on("l2update", l2update => {
+  console.log(`------------------\n${Date.now()}`);
   onL2Update(l2update, calculator.v1);
   onL2Update(l2update, calculator.v2);
+  onL2Update(l2update, calculator.v3);
 });
 
 const start = async () => {
