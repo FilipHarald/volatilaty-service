@@ -2,7 +2,7 @@
 
 ## running...
 
-### ...in Docker with vizualsation in Grafana
+### ...in Docker with visualization in Grafana
 Requires `docker-compose`.
 
 step 1:
