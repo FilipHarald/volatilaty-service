@@ -11,6 +11,7 @@ static PREVIOUS_BOOKS: Lazy<Mutex<Vec<[f64; 4]>>> = Lazy::new(|| Mutex::new(vec!
 fn update(mut cx: FunctionContext) -> JsResult<JsObject> {
 
     // --------------- UPDATE BOOKS
+    // TODO: move to separate function
     let timestamp_ms = cx.argument::<JsNumber>(0)?;
     let bids = cx.argument::<JsArray>(1)?.to_vec(&mut cx).unwrap();
     let asks = cx.argument::<JsArray>(2)?.to_vec(&mut cx).unwrap();
@@ -59,6 +60,7 @@ fn update(mut cx: FunctionContext) -> JsResult<JsObject> {
         .retain(|prev_book| prev_book[TIMESTAMP_INDEX] > outdated_threshold);
 
     // --------------- CALCULATE
+    // TODO: move to separate function, and use only 1 lock instead of 5...
     let mut sum: f64 = 0.0;
 
     let second_last_index = PREVIOUS_BOOKS.lock().unwrap().len() - 1;

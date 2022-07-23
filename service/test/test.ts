@@ -26,15 +26,16 @@ describe('Volatility calculation', () => {
         ).equal('1');
       });
       it('should return correct volatility with rolling window', async () => {
-        // TODO: make tests stateless (this should not depend on above test)
-        calc.update(l2Updates[1] as unknown as Level2Update).volatility;
-        calc.update(l2Updates[2] as unknown as Level2Update).volatility;
-        calc.update(l2Updates[3] as unknown as Level2Update).volatility;
+        const calc0 = new v1();
+        calc0.update(l2Updates[0] as unknown as Level2Update).volatility;
+        calc0.update(l2Updates[1] as unknown as Level2Update).volatility;
+        calc0.update(l2Updates[2] as unknown as Level2Update).volatility;
+        calc0.update(l2Updates[3] as unknown as Level2Update).volatility;
         expect(
-          calc.update(l2Updates[4] as unknown as Level2Update).volatility
+          calc0.update(l2Updates[4] as unknown as Level2Update).volatility
         ).equal(0.17699841196990795);
         expect(
-          calc.update(l2Updates[5] as unknown as Level2Update).volatility
+          calc0.update(l2Updates[5] as unknown as Level2Update).volatility
         ).equal(0.16003151392510687);
       });
       it('should not be affected by other instances', async () => {
@@ -49,37 +50,38 @@ describe('Volatility calculation', () => {
     });
     describe('v3', () => {
       const calc = new v3();
-      // TODO:
-      // it('should calculate correctly', () => {
-      //   expect(v3.calculate(books)).equal(0.36147860256782666);
-      // });
+      // TODO: change rust-code to export calculate-functoin
+      it.skip('should calculate correctly', () => {
+        expect(calc.calculate(books)).equal(0.36147860256782666);
+      });
       it('should return correct version', async () => {
         expect(
           (await calc.update(l2Updates[0] as unknown as Level2Update)).version
         ).equal('3');
       });
       it('should return correct volatility with rolling window', async () => {
-        // TODO: make tests stateless (this should not depend on above test)
-        (await calc.update(l2Updates[1] as unknown as Level2Update)).volatility;
-        (await calc.update(l2Updates[2] as unknown as Level2Update)).volatility;
-        (await calc.update(l2Updates[3] as unknown as Level2Update)).volatility;
+        const calc0 = new v3();
+        (await calc0.update(l2Updates[0] as unknown as Level2Update)).volatility;
+        (await calc0.update(l2Updates[1] as unknown as Level2Update)).volatility;
+        (await calc0.update(l2Updates[2] as unknown as Level2Update)).volatility;
+        (await calc0.update(l2Updates[3] as unknown as Level2Update)).volatility;
         expect(
-          (await calc.update(l2Updates[4] as unknown as Level2Update)).volatility
+          (await calc0.update(l2Updates[4] as unknown as Level2Update)).volatility
         ).equal(0.17699841196990795);
         expect(
-          (await calc.update(l2Updates[5] as unknown as Level2Update)).volatility
+          (await calc0.update(l2Updates[5] as unknown as Level2Update)).volatility
         ).equal(0.16003151392510687);
       });
-     // TODO: fix so that it will not share memory
-     // it('should not be affected by other instances', async () => {
-     //   const calc1 = new v3();
-     //   const calc2 = new v3();
-     //   await calc1.update(l2Updates[0] as unknown as Level2Update)
-     //   await calc2.update(l2Updates[1] as unknown as Level2Update)
-     //   expect(
-     //     (await calc1.update(l2Updates[2] as unknown as Level2Update)).volatility
-     //   ).equal(0.32359404151289345);
-     // });
+      it.skip('should not be affected by other instances', async () => {
+        // TODO: fix so that each instance will have it's own memory
+        const calc2 = new v3();
+        const calc3 = new v3();
+        await calc2.update(l2Updates[0] as unknown as Level2Update)
+        await calc3.update(l2Updates[1] as unknown as Level2Update)
+        expect(
+          (await calc2.update(l2Updates[2] as unknown as Level2Update)).volatility
+        ).equal(0.32359404151289345);
+      });
     });
   });
 
