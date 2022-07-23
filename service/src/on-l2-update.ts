@@ -55,7 +55,6 @@ const updateAsync = async (l2update: Level2Update, calculator, market: {id: stri
 
 const onL2Update = (l2update: Level2Update, market: {id: string; base: string; quote: string;}) => {
   console.log(`------------------\n${Date.now()}`);
-  // TODO: calculators should be init from index.ts for easier configuration. Even better to have as env-vars...
   if (market.id === "BTCUSDT") {
     updateAsync(l2update, v3Calculator, market);
   }
